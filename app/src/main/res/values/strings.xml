@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">OffTrail</string>
+    <string name="msg_splash">Carregando ...</string>
+    <string name="edt_login">Entre com o login</string>
+    <string name="edt_senha">Entre com a senha</string>
+    <string name="title_activity_principal">OffTrail</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <array name="motos">
+        <item>Moto 01</item>
+        <item>Moto 02</item>
+        <item>Moto 03</item>
+        <item>Moto 04</item>
+    </array>
+</resources>
