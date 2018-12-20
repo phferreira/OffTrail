@@ -1,6 +1,10 @@
 buildscript {
     repositories {
         mavenCentral()
+        mavenLocal()
+        maven {
+            url 'https://repo.spring.io/libs-milestone'
+        }
     }
     dependencies {
         // replace with the current version of the Android plugin
@@ -11,9 +15,6 @@ buildscript {
 repositories {
     mavenCentral()
     mavenLocal()
-    maven {
-        url 'https://repo.spring.io/libs-milestone'
-    }
 }
 
 apply plugin: 'com.android.application'
@@ -67,6 +68,14 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation files('libs/ormlite-android-5.1.jar')
     implementation files('libs/ormlite-core-5.1.jar')
+}
+
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
+}
+
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
 }
 
 dependencies {

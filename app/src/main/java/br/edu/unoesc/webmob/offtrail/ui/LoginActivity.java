@@ -14,6 +14,7 @@ import org.androidannotations.annotations.Fullscreen;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.WindowFeature;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 
 import br.edu.unoesc.webmob.offtrail.R;
@@ -31,40 +32,31 @@ public class LoginActivity extends AppCompatActivity {
     @ViewById
     EditText edtSenha;
 
-    public void sair(View v) {
-        finish();
-        System.exit(0);
-    }
-
-    public void login(View v) {
-
+    public void entrarLogin(View v) {
         String strLogin = edtLogin.getText().toString();
         String strSenha = edtSenha.getText().toString();
 
 
-
-        if (strLogin != null && strSenha != null &&
-                !strLogin.trim().equals("") &&
-                !strSenha.trim().equals("")) {
+        if (strLogin != null && strSenha != null) {
             Usuario u = dh.validaLogin(strLogin, strSenha);
             if (u != null) {
-                Intent itPrincipal = new Intent(
-                        this,
-                        PrincipalActivity_.class
-                );
-                // passando parâmetro para outra tela
-                // utiliza um HashMap(chave, valor)
+                //Toast.makeText(this, "Bem vindo " + strLogin.toUpperCase(), Toast.LENGTH_SHORT).show();
+                Intent itPrincipal = new Intent(this, PrincipalActivity_.class);
+                //passando parâmetro para outra tela (chave,valor)
                 itPrincipal.putExtra("usuario", u);
                 startActivity(itPrincipal);
                 finish();
+            } else {
+                Toast.makeText(this, "Usuário e senha inválidos", Toast.LENGTH_LONG).show();
             }
         } else {
-            Toast.makeText(this,
-                    "Usuário e/ou senha inválidos!"
-            , Toast.LENGTH_LONG).show();
-            edtLogin.setText("");
-            edtSenha.setText("");
-            edtLogin.requestFocus();
+            Toast.makeText(this, "Preencha os campos", Toast.LENGTH_LONG).show();
         }
+
+    }
+
+    public void sairLogin(View v) {
+        finish();
+        System.exit(0);
     }
 }

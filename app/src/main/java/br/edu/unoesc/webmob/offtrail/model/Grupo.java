@@ -3,8 +3,10 @@ package br.edu.unoesc.webmob.offtrail.model;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 @DatabaseTable
-public class Grupo {
+public class Grupo implements Serializable {
     @DatabaseField(generatedId = true)
     private Integer codigo;
     @DatabaseField(canBeNull = false)
@@ -12,6 +14,10 @@ public class Grupo {
     @DatabaseField(foreign = true,
             foreignColumnName = "codigo")
     private Cidade cidade;
+
+    public Grupo() {
+
+    }
 
     public Integer getCodigo() {
         return codigo;
@@ -35,5 +41,10 @@ public class Grupo {
 
     public void setCidade(Cidade cidade) {
         this.cidade = cidade;
+    }
+
+    @Override
+    public String toString() {
+        return getNome();
     }
 }

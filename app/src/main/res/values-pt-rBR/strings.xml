@@ -2,19 +2,16 @@
 <resources>
     <string name="app_name">OffTrail</string>
     <string name="msg_splash">Carregando ...</string>
-    <string name="edt_login">Entre com o login</string>
-    <string name="edt_senha">Entre com a senha</string>
-    <array name="motos">
-        <item>Moto 01</item>
-        <item>Moto 02</item>
-        <item>Moto 03</item>
-        <item>Moto 04</item>
-    </array>
-    <string name="title_activity_principal">OffTrail</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+    <string name="btn_entrar_login">Entrar</string>
+    <string name="btn_sair_login">Sair</string>
+    <string name="edt_login">Informe seu login</string>
+    <string name="edt_senha">Informe sua senha</string>
+    <string name="nome_trilheiro">Nome do trilheiro</string>
+    <string name="idade_trilheiro">Idade do trilheiro</string>
+    <string name="btn_salvar">Salvar</string>
+    <string name="btn_cancelar">Cancelar</string>
+    <string name="txSobre">Trabalho realizado para fins de conhecimento e pratica sobre desenvolvimento android</string>
+    <string name="tx_cor">Selecione a cor de fundo:</string>
+    <string name="swt_Moto">Usar internet </string>
+    <string name="btn_tx_aplicar">Aplicar</string>
 </resources>

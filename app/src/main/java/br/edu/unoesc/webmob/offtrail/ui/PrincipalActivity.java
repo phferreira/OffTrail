@@ -1,10 +1,10 @@
 package br.edu.unoesc.webmob.offtrail.ui;
 
 import android.app.ProgressDialog;
-import android.graphics.Color;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.view.View;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,13 +24,15 @@ import org.androidannotations.annotations.Fullscreen;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.WindowFeature;
-import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.androidannotations.rest.spring.annotations.RestService;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import br.edu.unoesc.webmob.offtrail.R;
 import br.edu.unoesc.webmob.offtrail.adapter.TrilheiroAdapter;
+import br.edu.unoesc.webmob.offtrail.helper.DatabaseHelper;
+import br.edu.unoesc.webmob.offtrail.model.Cidade;
 import br.edu.unoesc.webmob.offtrail.model.Usuario;
 import br.edu.unoesc.webmob.offtrail.rest.CidadeClient;
 import br.edu.unoesc.webmob.offtrail.rest.Endereco;
@@ -45,32 +46,35 @@ public class PrincipalActivity extends AppCompatActivity
     ListView lstTrilheiros;
     @Bean
     TrilheiroAdapter trilheiroAdapter;
-    ProgressDialog pd;
 
-    // injeção das preferências
-    @Pref
-    Configuracao_ configuracao;
-
-    // injeção do cliente Rest
+    //injeção do cliente rest
     @RestService
     CidadeClient cidadeClient;
 
-    // após criar as views inicializa o
-    // restante dos dados ...
+    ProgressDialog pd;
+
+    @Bean
+    DatabaseHelper dh;
+
+    Toolbar toolbar;
+
+    //injeção das preferências
+    //@Pref
+    Configuracao configuracao;
+
     @AfterViews
     public void inicializar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent itCadastrarTrilheiro = new Intent(PrincipalActivity.this, TrilheiroActivity_.class);
+                startActivity(itCadastrarTrilheiro);
             }
         });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -80,36 +84,24 @@ public class PrincipalActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // recuperar dados do usuario
-        Usuario u = (Usuario) getIntent().
-                getSerializableExtra("usuario");
-        Toast.makeText(this,
-                "Seja bem-vindo! - " + u.getLogin(),
-                Toast.LENGTH_LONG).show();
+        //recuperar dados do usuário
+        Usuario u = (Usuario) getIntent().getSerializableExtra("usuario");
 
-        // *** LENDO OS PARÂMETROS
-        // mudando a cor de fundo da view principal
-        View v = toolbar.getRootView();
-        // setando a cor de fundo da activity
-        v.setBackgroundColor(configuracao.cor().get());
-        Toast.makeText(this,
-                configuracao.parametro().get(),
-                Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Seja bem vindo - " + u.getLogin().toUpperCase(), Toast.LENGTH_LONG).show();
 
-        // ** ESCREVENDO OS PARÂMETROS
-        configuracao.edit().cor().put(Color.BLUE).apply();
-    } // inicializar
+        lstTrilheiros.setAdapter(trilheiroAdapter);
+    }
+
+    public void atualizarListaTrilheiros() {
+        TrilheiroAdapter ta = (TrilheiroAdapter) lstTrilheiros.getAdapter();
+        ta.ordenarLista();
+        ta.notifyDataSetChanged();
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        atualizaListaTrilheiros();
-        //TODO: (1,00) Implementar atualização automática da lista de trilheiros ao sair da tela de cadastro do trilheiro.
-    }
-
-    public void atualizaListaTrilheiros() {
-        //TODO: (1,00) Implementar a ordenação pelo nome do trilheiro de forma descendente.
-        lstTrilheiros.setAdapter(trilheiroAdapter);
+        atualizarListaTrilheiros();
     }
 
     @Override
@@ -135,7 +127,8 @@ public class PrincipalActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            //TODO: (0,75) Implementar uma tela de sobre o sistema com informações gerais.
+            Intent itSobre = new Intent(this, SobreActivity_.class);
+            startActivity(itSobre);
         }
 
         return super.onOptionsItemSelected(item);
@@ -148,15 +141,15 @@ public class PrincipalActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_sincronizar) {
-            pd =
-                    new ProgressDialog(this);
+            pd = new ProgressDialog(this);
             pd.setCancelable(false);
-            pd.setTitle("Aguarde, consultando ...");
+            pd.setTitle("Aguarde sincronizando ...");
             pd.setIndeterminate(true);
             pd.show();
             consultarCidadePorNome();
         } else if (id == R.id.nav_preferencias) {
-            //TODO: (0,75) Implementar tela para salvar preferências.
+            Intent itPreferencias = new Intent(this,PreferenciaActivity_.class);
+            startActivity(itPreferencias);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -167,20 +160,29 @@ public class PrincipalActivity extends AppCompatActivity
     @UiThread
     public void mostrarResultado(String resultado) {
         pd.dismiss();
-        Toast.makeText(this,
-                resultado,
-                Toast.LENGTH_LONG).show();
+        Toast.makeText(this, resultado, Toast.LENGTH_LONG).show();
     }
 
-    @Background(delay = 2000)
+    @Background(delay = 1000)
     public void consultarCidadePorNome() {
-        //TODO: (1,50) Implementar a busca de todas as cidades que começam com "São" e gravar na tabela cidade.
-        // aciona a busca
-        List<Endereco> e =
-                cidadeClient.getEndereco(
-                        "Maravilha");
+        //pesquisa todas as cidades
+        List<Endereco> e = cidadeClient.getEndereco("São");
+
+        //limpa as cidades
+        try {
+            dh.getCidadeDao().delete(dh.getCidadeDao().queryForAll());
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+        }
+
+        //cadastra as cidades
+        for (Endereco c : e) {
+            Cidade cidade = new Cidade();
+            cidade.setNome(c.toString());
+        }
         if (e != null && e.size() > 0) {
-            mostrarResultado(e.get(0).toString());
+            //mostrarResultado(e.get(0).toString());
+            mostrarResultado("Sincronizado: " + e.size() + " cidades");
             pd.dismiss();
         }
     }

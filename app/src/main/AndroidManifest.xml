@@ -29,13 +29,10 @@
         <activity
             android:name=".ui.PrincipalActivity_"
             android:label="@string/title_activity_principal"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity android:name=".ui.CadastroTrilheiroActivity_">
-
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ui.TrilheiroActivity_"/>
+        <activity android:name=".ui.SobreActivity_"/>
+        <activity android:name=".ui.PreferenciaActivity_"/>
     </application>
 
 </manifest>

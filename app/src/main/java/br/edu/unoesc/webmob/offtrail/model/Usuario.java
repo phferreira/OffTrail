@@ -7,12 +7,22 @@ import java.io.Serializable;
 
 @DatabaseTable
 public class Usuario implements Serializable {
-    @DatabaseField(id = true)
+    @DatabaseField(generatedId = true)
+    private Integer codigo;
+    @DatabaseField(canBeNull = false)
     private String login;
     @DatabaseField(canBeNull = false)
     private String senha;
 
-    public Usuario() {
+    public Usuario(){
+
+}
+    public Integer getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(Integer codigo) {
+        this.codigo = codigo;
     }
 
     public String getLogin() {

@@ -11,6 +11,8 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import br.edu.unoesc.webmob.offtrail.helper.DatabaseHelper;
@@ -66,5 +68,15 @@ public class TrilheiroAdapter
         trilheiroItemView.bind(getItem(position));
 
         return trilheiroItemView;
+    }
+
+    public void ordenarLista() {
+        initAdapter();
+        Collections.sort(trilheiros, new Comparator<Trilheiro>() {
+            @Override
+            public int compare(Trilheiro t1, Trilheiro t2) {
+                return t2.getNome().compareTo(t1.getNome());
+            }
+        });
     }
 }

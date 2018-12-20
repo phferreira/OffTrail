@@ -35,7 +35,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     // the DAO object we use to access the SimpleData table
     private Dao<Cidade, Integer> cidadeDao = null;
-    private Dao<Usuario, String> usuarioDao = null;
+    private Dao<Usuario, Integer> usuarioDao = null;
     private Dao<Grupo, Integer> grupoDao = null;
     private Dao<Trilheiro, Integer> trilheiroDao = null;
     private Dao<Moto, Integer> motoDao = null;
@@ -89,12 +89,14 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
             m.setMarca("Honda");
             m.setCilindrada("125cc");
             m.setCor("Preta");
+            getMotoDao().create(m);
             // insert da moto
             m = new Moto();
             m.setModelo("CRF");
             m.setMarca("Honda");
             m.setCilindrada("230cc");
             m.setCor("Vermelha");
+            getMotoDao().create(m);
             // insert da moto
 
         } catch (SQLException e) {
@@ -152,7 +154,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         return grupoTrilheiroDao;
     }
 
-    public Dao<Usuario, String> getUsuarioDao() throws SQLException {
+    public Dao<Usuario, Integer> getUsuarioDao() throws SQLException {
         if (usuarioDao == null) {
             usuarioDao = getDao(Usuario.class);
         }
